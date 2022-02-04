@@ -21,17 +21,13 @@ type S struct {
 	rootDir string
 }
 
-func NewSeedLoader(serviceName, seedsPath string) (S, error) {
-	p, err := build.Default.Import(fmt.Sprintf("%s/%s", serviceName, seedsPath), "", build.FindOnly)
+func NewSeedLoader(packageName, seedsPath string) (S, error) {
+	p, err := build.Default.Import(fmt.Sprintf("%s/%s", packageName, seedsPath), "", build.FindOnly)
 	if err != nil {
-		fmt.Print(p.Dir, " Dir\n")
 		return S{}, ErrInitializingSeeder
 	}
 
-	fmt.Print(p.Dir)
-	return S{
-		rootDir: p.Dir,
-	}, nil
+	return S{rootDir: p.Dir}, nil
 }
 
 func (s S) GetSeed(file string) ([]byte, error) {
